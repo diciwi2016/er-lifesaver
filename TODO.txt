@@ -1,0 +1,9 @@
+TODO
+----------------------------------------------------------------------------------------------
+1. Display nearby hospitals [done]
+2. Retrieve current location automatically with... javascript? on the index.html page
+3. Retrieve waiting times for emergency rooms 
+    (if we can't an alt option may be to let hospitals sign up on our site and add their info)
+4. Analyze and determine waiting time + travel time and find the best option(s)
+5. Display ER google map route
+6. Video :)
