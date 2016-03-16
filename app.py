@@ -10,20 +10,26 @@ key="AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
 def root():
     return render_template("index.html", title = 'Main')
 
+##V link to show nearby hospitals + waiting time if available
+
 @app.route('/current', methods = ["GET", "POST"])
 def current():
     if request.method == "POST":
+        
+        #takes the latitude and longitude of user's current location
         lat = request.form['lat']
         lon = request.form['lon']
         url="http://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(lat)+"," + str(lon) + "&sensor=true"# + "&key=" + key
         url=urllib2.urlopen(url)
         f=url.read();
         f = json.loads(f)
-
+        
+        #finds closest address location based on user lat and long 
         res= f['results']
         loc= res[0]["formatted_address"]
         loc=loc.replace(" ", '+')
-
+        
+        #find nearest hospitals
         url="https://maps.googleapis.com/maps/api/place/textsearch/json?query=emergency+room+hospital" + "+near+" + loc + "&key=AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA" 
 
         url=urllib2.urlopen(url)
