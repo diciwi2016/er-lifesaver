@@ -51,19 +51,19 @@ def current():
 def login():
     if request.method == "GET":
         if 'logged_in' in session and session['logged_in']:
-            return redirect(url_for("home"))
+            return "Logged in!!"
         else:
             return render_template("login.html")
     else:
         assert(request.method == "POST")
         if userdb.verify(request.form['username_in'], request.form['password_in']):
             session['logged_in'] = True
-            session['username_hash'] = userdb.username_hash(request.form['username_in'])
-            session['password_hash'] = userdb.password_hash( request.form['password_in'])
-            return redirect(url_for("home"))
+            session['username_hash'] = request.form['username_in']
+            session['password_hash'] = request.form['password_in']
+            return redirect("Success")
         else:
             session['logged_in'] = False
-            return render_template("login.html", ERROR="User not recognized.")
+            return render_template("login.html")
 
 
 @app.route("/logout")
