@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> {{title}} </title>
+  </head>
+
+  <body>
+
+    {% block content %}
+
+<center>
+    <img src="http://www.naturallyeclectik.com/wp-content/uploads/2016/01/emergency-255x300.jpg"
+</center>
+<script>
+
+var x=document.getElementById("demo");
+window.onload = function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.watchPosition(showPosition);
+    navigator.geolocation.watchPosition(showPosition2);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";}
+  }
+function showPosition(position)
+  {
+  document.getElementById("lat").value=position.coords.latitude
+  }
+  function showPosition2(position)
+  {
+  document.getElementById("lon").value=position.coords.longitude
+  }
+</script>
+<form action="/current" method="POST">
+<input class = "form-control" id="lat" type="text" name="lat" value="">
+<input class = "form-control" id="lon" type="text" name = "lon" value="">
+<input type="submit" value = "Current Location">
+</form>
+<BR><BR>
+
+    {% endblock %}
+
+  </body>
+</html>

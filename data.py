@@ -1,5 +1,5 @@
 #! /usr/bin/python
-print "Content-type: text/html\n\n"
+#print "Content-type: text/html\n\n"
 import urllib2, json, urllib
 from bs4 import BeautifulSoup, SoupStrainer
 #from cookielib import CookieJar
@@ -44,4 +44,4 @@ for i in info[:]:
         if info.index(i)>len(info):
             break
         
-print hd
+#print hd
