@@ -1,15 +1,15 @@
 TODO
 ----------------------------------------------------------------------------------------------
-*1. Allow user account creation to input info (Use PHP? or flask?)
+*1. Allow user account creation to input info [done]
 
 2. Display nearby hospitals [done]
 
 3. Retrieve current location automatically [done]
 
-*4. Retrieve waiting times for emergency rooms [half-done]
+*4. Retrieve waiting times for emergency rooms [attempted]
     (if we can't an alt option may be to let hospitals sign up on our site and add their info)
 
-5. Analyze and determine waiting time + travel time and find the best option(s)
+5. Analyze and determine waiting time + travel time and find the best option(s) [in-progress]
 
 6. Display ER google map route
 

@@ -1,12 +1,29 @@
 import hashlib
 
-def verify(username, password):
-    credentials = list(open("known_users"))
-    for user in credentials:
-        _user = user.strip().split("|||")
-        if _user[0] == username and _user[1] == password_hash(password):
+def verify(u,p):
+    d={}
+    uname=str(u)
+    pwd=str(p)
+    f=open('database.txt','r').read().strip().split("\n")
+    for i in range(len(f)):
+        f[i] = f[i].split("|")
+    for i in f:
+        d[i[0]]=i[1]
+    if uname in d:
+        if d[uname]==password_hash(pwd):
             return True
-    return False
+        else:
+            print 'wrong pass'
+            return False
+    else:
+        print 'cant find uname'
+        return False
+
+def add(uname, pwd):
+    f=open('database.txt','a')
+    f.write(uname + "|" + password_hash(pwd) +  "\n")
+    f.close()
+    return True
 
 def password_hash(password):
     # Hash alg:
@@ -20,6 +37,6 @@ if __name__ == "__main__":
     if str(raw_input("Add user? ")) == "YES":
         username = str(raw_input("New username: "))
         password = str(raw_input("New password: "))
-        f = open("known_users", 'a')
-        f.write(username + "|||" + password_hash(password) + "\n")
+        f = open("database.txt", 'a')
+        add(username, password)
         f.close()

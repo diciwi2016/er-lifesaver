@@ -1,0 +1,13 @@
+#banner {
+  background-color: #FA8072;
+  position:relative;
+  width:100px;
+  height:20px;
+  }
+
+#inner_element {
+  position:relative;
+   top:10px;
+   left:20px;
+   width:40px;
+   height:20px;}

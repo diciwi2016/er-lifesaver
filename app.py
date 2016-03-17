@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from random import randint, choice
-import urllib2, json, requests, userdb
+import urllib2, json, userdb
 from data import hd
 
 app = Flask(__name__)
@@ -46,6 +45,18 @@ def current():
         
     return render_template("current.html",  s=retS)
 
+@app.route("/signup", methods = ["GET", "POST"])
+def signup():
+           if request.method=="POST":
+               user = request.form["username"]
+               pas = request.form["password"]
+               pas2 = request.form["password2"]
+               if pas == pas2:
+                   userdb.add(user, pas)
+               else:
+                   return "Passwords don't match"
+           return render_template("signup.html")
+
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/login/", methods=["GET", "POST"])
 def login():
@@ -72,7 +83,12 @@ def logout():
     session['logged_in'] = False
     return redirect(url_for("login"))
 
+@app.route("/success")
+def success():
+    return render_template("success.html", title="LoggedIn")
+
 if __name__=='__main__':
+    app.secret_key = 'dcb61f28eafb8771213f3e0612422b8d'
     app.run(debug=True)
 
 app.run('0.0.0.0', port = 8000)
