@@ -38,13 +38,14 @@ def current():
         res= f['results']
 
         x=0
-        retS=""
+        retS="<table border = '1'>"
         for i in res:
-             retS+= i['name'] + "<br>"+ i['formatted_address']
+             retS+= "<tr><td><b>" + i['name'] + "</b><br>"+ i['formatted_address'] 
+             
              for a in hd:
                  if a[:a.find('hospital')-1] in i['name'].lower():
-                     retS+= "<BR>Waiting Time: "+ hd[a] + " minutes"
-             retS+= "<BR><BR><BR>"#, '<img src="', i['icon'], '>"<br><br><br>'
+                     retS+= "</td><td>Waiting Time: "+ hd[a] + " minutes" 
+             retS+= "<BR><BR></td></tr>"#, '<img src="', i['icon'], '>"<br><br><br>'
              x+=1
              if x== 10:
                 break
