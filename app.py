@@ -19,50 +19,57 @@ def current():
         lat = request.form['lat']
         lon = request.form['lon']
         url="http://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(lat)+"," + str(lon) + "&sensor=true"# + "&key=" + key
-        url=urllib2.urlopen(url)
-        f=url.read();
-        f = json.loads(f)
-        
-        #finds closest address location based on user lat and long 
-        res= f['results']
-        loc= res[0]["formatted_address"]
-        loc=loc.replace(" ", '+')
-        
-        #find nearest hospitals
-        url="https://maps.googleapis.com/maps/api/place/textsearch/json?query=emergency+room+hospital" + "+near+" + loc + "&key=AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA" 
-
-        url=urllib2.urlopen(url)
-        f=url.read()
-        f = json.loads(f)
-
-        res= f['results']
-
-        x=0
-        retS="<table border = '1'>"
-        #url for directions api
-        directions = "https://maps.googleapis.com/maps/api/directions/json?mode=driving&key=" + key
-        for i in res:
-             dirURL = directions + "&origin=" + lat + "," + lon + "&destination=" + i['formatted_address']
-             dirURL = dirURL.replace(" ", "%20")
-             dirJson = json.loads(urllib2.urlopen(dirURL).read())
-             legs = dirJson['routes'][0]['legs'][0]
-             time = legs['duration']['text']
-             retS+= "<tr><td><b>" + i['name'] + "</b><br>"+ i['formatted_address'] + "<br>Duration of trip: " + time + "<br>"
-             steps = legs['steps']
-             
-             for step in steps:
-                 retS += step['html_instructions'] + '<br>'
-             
-             for a in hd:
-                 if a[:a.find('hospital')-1] in i['name'].lower():
-                     retS+= "</td><td>Waiting Time: "+ hd[a] + " minutes"
-                     break
-             retS+= "<BR><BR></td></tr>"#, '<img src="', i['icon'], '>"<br><br><br>'
-             x+=1
-             if x== 10:
-                break
+        retS = hospitalsNearLocation(lat + "," + lon, url)
         
     return render_template("current.html",  s=retS)
+
+#origin is the formatted POST for the origin in directions api
+#url is the url for the gmaps api
+#returns the formatted thing the whole thign
+def hospitalsNearLocation(origin,url):
+    url=urllib2.urlopen(url)
+    f=url.read();
+    f = json.loads(f)
+
+    #finds closest address location based on user lat and long 
+    res= f['results']
+    loc= res[0]["formatted_address"]
+    loc=loc.replace(" ", '+')
+
+    #find nearest hospitals
+    url="https://maps.googleapis.com/maps/api/place/textsearch/json?query=emergency+room+hospital" + "+near+" + loc + "&key=AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA" 
+
+    url=urllib2.urlopen(url)
+    f=url.read()
+    f = json.loads(f)
+
+    res= f['results']
+
+    x=0
+    retS="<table border = '1'>"
+    #url for directions api
+    directions = "https://maps.googleapis.com/maps/api/directions/json?mode=driving&key=" + key
+    for i in res:
+         dirURL = directions + "&origin=" + origin + "&destination=" + i['formatted_address']
+         dirURL = dirURL.replace(" ", "%20")
+         dirJson = json.loads(urllib2.urlopen(dirURL).read())
+         legs = dirJson['routes'][0]['legs'][0]
+         time = legs['duration']['text']
+         retS+= "<tr><td><b>" + i['name'] + "</b><br>"+ i['formatted_address'] + "<br>Duration of trip: " + time + "<br>"
+         steps = legs['steps']
+
+         for step in steps:
+             retS += step['html_instructions'] + '<br>'
+
+         for a in hd:
+             if a[:a.find('hospital')-1] in i['name'].lower():
+                 retS+= "</td><td>Waiting Time: "+ hd[a] + " minutes" 
+         retS+= "<BR><BR></td></tr>"#, '<img src="', i['icon'], '>"<br><br><br>'
+         x+=1
+         if x== 10:
+            break
+    return retS
+
 
 @app.route("/signup", methods = ["GET", "POST"])
 def signup():
@@ -81,7 +88,7 @@ def signup():
 def login():
     if request.method == "GET":
         if 'logged_in' in session and session['logged_in']:
-            return render_template("success.html")
+            return "Logged in!!"
         else:
             return render_template("login.html")
     else:
@@ -90,7 +97,7 @@ def login():
             session['logged_in'] = True
             session['username_hash'] = request.form['username_in']
             session['password_hash'] = request.form['password_in']
-            return render_template("success.html")
+            return redirect("Success")
         else:
             session['logged_in'] = False
             return render_template("login.html")
@@ -105,21 +112,6 @@ def logout():
 @app.route("/success")
 def success():
     return render_template("success.html", title="LoggedIn")
-
-@app.route("/update", methods=["GET", "POST"])
-def update():
-    if request.method=="POST":
-        fName = request.form["fName"]
-        lName = request.form["lName"]
-        dob = request.form["dob"]
-        state = request.form["state"]
-        loc = request.form["loc"]
-    else:
-        return render_template("update.html")
-
-@app.route("/send")
-def send():
-    return render_template("send.html")
 
 if __name__=='__main__':
     app.secret_key = 'dcb61f28eafb8771213f3e0612422b8d'
