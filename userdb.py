@@ -25,6 +25,19 @@ def add(uname, pwd):
     f.close()
     return True
 
+def update(uname, pwd, fname, lname, dob, loc, state):
+
+    DATA=open('database.txt','r')
+    File=DATA.read()
+    DATA.close()
+    
+    index=File.find(uname+"|")+len(user)+1
+    File=File[:index]+Npass+File[index+len(pwd):]
+    FileW=open('database.txt','w')
+    FileW.write(File)    
+    
+    
+           
 def password_hash(password):
     # Hash alg:
     m = hashlib.md5()
