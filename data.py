@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 def showContent(urlz):
       html = urllib2.build_opener(urllib2.HTTPCookieProcessor).open(urlz)
 
-      soup = BeautifulSoup(html, "html.parser")
+      soup = BeautifulSoup(html, "html5lib")
       #texts=soup.findAll(text=True)
       # kill all script and style elements
 

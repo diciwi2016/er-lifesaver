@@ -39,8 +39,19 @@ def current():
 
         x=0
         retS="<table border = '1'>"
+        #url for directions api
+        directions = "https://maps.googleapis.com/maps/api/directions/json?mode=driving&key=" + key
         for i in res:
-             retS+= "<tr><td><b>" + i['name'] + "</b><br>"+ i['formatted_address'] 
+             dirURL = directions + "&origin=" + lat + "," + lon + "&destination=" + i['formatted_address']
+             dirURL = dirURL.replace(" ", "%20")
+             dirJson = json.loads(urllib2.urlopen(dirURL).read())
+             legs = dirJson['routes'][0]['legs'][0]
+             time = legs['duration']['text']
+             retS+= "<tr><td><b>" + i['name'] + "</b><br>"+ i['formatted_address'] + "<br>Duration of trip: " + time + "<br>"
+             steps = legs['steps']
+             
+             for step in steps:
+                 retS += step['html_instructions'] + '<br>'
              
              for a in hd:
                  if a[:a.find('hospital')-1] in i['name'].lower():
