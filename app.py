@@ -44,7 +44,8 @@ def current():
              
              for a in hd:
                  if a[:a.find('hospital')-1] in i['name'].lower():
-                     retS+= "</td><td>Waiting Time: "+ hd[a] + " minutes" 
+                     retS+= "</td><td>Waiting Time: "+ hd[a] + " minutes"
+                     break
              retS+= "<BR><BR></td></tr>"#, '<img src="', i['icon'], '>"<br><br><br>'
              x+=1
              if x== 10:
@@ -69,7 +70,7 @@ def signup():
 def login():
     if request.method == "GET":
         if 'logged_in' in session and session['logged_in']:
-            return "Logged in!!"
+            return render_template("success.html")
         else:
             return render_template("login.html")
     else:
@@ -78,7 +79,7 @@ def login():
             session['logged_in'] = True
             session['username_hash'] = request.form['username_in']
             session['password_hash'] = request.form['password_in']
-            return redirect("Success")
+            return render_template("success.html")
         else:
             session['logged_in'] = False
             return render_template("login.html")
@@ -93,6 +94,21 @@ def logout():
 @app.route("/success")
 def success():
     return render_template("success.html", title="LoggedIn")
+
+@app.route("/update", methods=["GET", "POST"])
+def update():
+    if request.method=="POST":
+        fName = request.form["fName"]
+        lName = request.form["lName"]
+        dob = request.form["dob"]
+        state = request.form["state"]
+        loc = request.form["loc"]
+    else:
+        return render_template("update.html")
+
+@app.route("/send")
+def send():
+    return render_template("send.html")
 
 if __name__=='__main__':
     app.secret_key = 'dcb61f28eafb8771213f3e0612422b8d'

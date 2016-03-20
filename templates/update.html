@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<form method="POST">
+  <BR>
+  <CENTER>
+  First Name : <input type="text" name="fName" value=""><br>
+  Last Name  : <input type="text" name="lName" value=""><br>
+  Day of Birth: <input type="text" name="dob" value="" placeholder="(mm/dd/yy)-->e.g. 06/22/97">  <br>
+  Address    : <input type="text" name="loc" value=""><br>
+  State      : <input type="text" name="state" value="" placeholder="NY"><br>
+  <input type="submit" name="button" value="Update"><br>
+</CENTER>
+
+</form>
+
+{% endblock %}
