@@ -25,7 +25,7 @@ def current():
 
 #origin is the formatted POST for the origin in directions api
 #url is the url for the gmaps api
-#returns the formatted thing the whole thign
+#returns the formatted thing the whole thing
 def hospitalsNearLocation(origin,url):
     url=urllib2.urlopen(url)
     f=url.read();
@@ -46,6 +46,7 @@ def hospitalsNearLocation(origin,url):
     res= f['results']
 
     x=0
+
     retS="<table border = '1'>"
     #url for directions api
     directions = "https://maps.googleapis.com/maps/api/directions/json?mode=driving&key=" + key
@@ -55,15 +56,18 @@ def hospitalsNearLocation(origin,url):
          dirJson = json.loads(urllib2.urlopen(dirURL).read())
          legs = dirJson['routes'][0]['legs'][0]
          time = legs['duration']['text']
-         retS+= "<tr><td><b>" + i['name'] + "</b><br>"+ i['formatted_address'] + "<br>Duration of trip: " + time + "<br>"
+         retS+= "<tr><td><p><b>" + i['name'] + "</b><br>"+ i['formatted_address'] + "<br>"
+         retS+= '<br> <span class="extra">'
          steps = legs['steps']
 
          for step in steps:
-             retS += step['html_instructions'] + '<br>'
-
+             retS += step['html_instructions'] + '<br>\n'
+         retS+='</span></p>'
+         retS+='<td> Travel Time: ' + time + '</td>' 
          for a in hd:
              if a[:a.find('hospital')-1] in i['name'].lower():
-                 retS+= "</td><td>Waiting Time: "+ hd[a] + " minutes" 
+                 retS+= "</td><td>Waiting Time: "+ hd[a] + " min"
+                 break
          retS+= "<BR><BR></td></tr>"#, '<img src="', i['icon'], '>"<br><br><br>'
          x+=1
          if x== 10:

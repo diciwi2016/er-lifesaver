@@ -9,3 +9,11 @@
 float:left;}
 #r {
 float:right;}
+
+.extra {
+    display: none;
+}
+
+p:hover .extra {
+    display: inline-block;
+}
