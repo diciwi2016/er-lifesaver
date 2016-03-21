@@ -18,6 +18,7 @@ def current():
         #takes the latitude and longitude of user's current location
         lat = request.form['lat']
         lon = request.form['lon']
+        
         url="http://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(lat)+"," + str(lon) + "&sensor=true"# + "&key=" + key
         retS = hospitalsNearLocation(lat + "," + lon, url)
         
@@ -56,7 +57,7 @@ def hospitalsNearLocation(origin,url):
          dirJson = json.loads(urllib2.urlopen(dirURL).read())
          legs = dirJson['routes'][0]['legs'][0]
          time = legs['duration']['text']
-         retS+= "<tr><td><p><b>" + i['name'] + "</b><br>"+ i['formatted_address'] + "<br>"
+         retS+= "<tr><td><p><b>" + i['name'] + "</b><br>"+ i['formatted_address'] + "<br>" + "<a href=\"https://www.google.com/maps/place/" + i['formatted_address'] + "\">Google Maps</a>"
          retS+= '<br> <span class="extra">'
          steps = legs['steps']
 
