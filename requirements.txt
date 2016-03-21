@@ -1,0 +1,16 @@
+Flask==0.10.1
+Jinja2==2.8
+MarkupSafe==0.23
+Werkzeug==0.11.4
+argparse==1.2.1
+astroid==1.4.5
+beautifulsoup4==4.4.1
+colorama==0.3.7
+html5lib==0.9999999
+itsdangerous==0.24
+lazy-object-proxy==1.2.1
+pylint==1.5.5
+requests==2.9.1
+six==1.10.0
+wrapt==1.10.6
+wsgiref==0.1.2
