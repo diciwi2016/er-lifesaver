@@ -46,7 +46,7 @@ def hospitalsNearLocation(origin,url):
     res= f['results']
 
     x=0
-
+    
     retS="<table border = '1'>"
     #url for directions api
     directions = "https://maps.googleapis.com/maps/api/directions/json?mode=driving&key=" + key
@@ -63,12 +63,18 @@ def hospitalsNearLocation(origin,url):
          for step in steps:
              retS += step['html_instructions'] + '<br>\n'
          retS+='</span></p>'
-         retS+='<td> Travel Time: ' + time + '</td>' 
+         retS+='<td> Travel Time: ' + time + '</td>'
+
+         #tmp for waiting time
+         tmp=0
          for a in hd:
              if a[:a.find('hospital')-1] in i['name'].lower():
                  retS+= "</td><td>Waiting Time: "+ hd[a] + " min"
+                 tmp = int(hd[a])
                  break
-         retS+= "<BR><BR></td></tr>"#, '<img src="', i['icon'], '>"<br><br><br>'
+        
+         retS+='<td> Total time: ' + str(int(time[:time.find(" ")]) + tmp) + "</td>"
+         retS+= "</td></tr>"#, '<img src="', i['icon'], '>"<br><br><br>'
          x+=1
          if x== 10:
             break
@@ -101,7 +107,7 @@ def login():
             session['logged_in'] = True
             session['username_hash'] = request.form['username_in']
             session['password_hash'] = request.form['password_in']
-            return redirect("Success")
+            return redirect("success")
         else:
             session['logged_in'] = False
             return render_template("login.html")
@@ -117,6 +123,23 @@ def logout():
 def success():
     return render_template("success.html", title="LoggedIn")
 
+@app.route("/update", methods=["GET", "POST"])
+def update():
+    if request.method=="POST":
+        fName = request.form["fName"]
+        lName = request.form["lName"]
+        dob = request.form["dob"]
+        state = request.form["state"]
+        loc = request.form["loc"]
+        return redirect("success")
+    else:
+        return render_template("update.html")
+ 
+@app.route("/send")
+def send():
+    return render_template("send.html")
+
+ 
 if __name__=='__main__':
     app.secret_key = 'dcb61f28eafb8771213f3e0612422b8d'
     app.run(debug=True)
