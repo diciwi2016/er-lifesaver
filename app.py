@@ -61,7 +61,8 @@ def hospitalsNearLocation(origin,url):
          steps = legs['steps']
 
          for step in steps:
-             retS += step['html_instructions'] + '<br>\n'
+             retS += step['html_instructions'].replace("</div>","").replace("<div style=\"font-size:0.9em\">","") + '<br>\n'
+    
          retS+='</span></p>'
          retS+='<td> Travel Time: ' + time + '</td>'
 
