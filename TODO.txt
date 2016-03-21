@@ -11,6 +11,6 @@ TODO
 
 5. Analyze and determine waiting time + travel time and find the best option(s) [in-progress]
 
-6. Display ER google map route
+6. Display ER google map route [done]
 
 7. Video :)
