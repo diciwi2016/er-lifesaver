@@ -27,14 +27,17 @@ def current():
             str(lat) + "," + str(lon) + "&sensor=true"  # + "&key=" + key
         retS = hospitalsNearLocation(lat + "," + lon, url)
 
-    return render_template("current.html", s=retS)
+    return retS
 
 # origin is the formatted POST for the origin in directions api
 # url is the url for the gmaps api
 # returns the formatted thing the whole thing
 
-
+# hospital_dict:
+# key: total time
+# val: (name, address, travel time, wait time, directions, link)
 def hospitalsNearLocation(origin, url):
+    hospital_data = []
     url = urllib2.urlopen(url)
     f = url.read()
     f = json.loads(f)
@@ -55,58 +58,42 @@ def hospitalsNearLocation(origin, url):
     res = f['results']
 
     x = 0
-
     retS = "<table border = '1'>"
     # url for directions api
-    directions = "https://maps.googleapis.com/maps/api/directions/json?mode=driving&key=" + key
+    direction_api = "https://maps.googleapis.com/maps/api/directions/json?mode=driving&key=" + key
     for i in res:
-        dirURL = directions + "&origin=" + origin + \
+        dirURL = direction_api + "&origin=" + origin + \
             "&destination=" + i['formatted_address']
         dirURL = dirURL.replace(" ", "%20")
         dirJson = json.loads(urllib2.urlopen(dirURL).read())
         legs = dirJson['routes'][0]['legs'][0]
-        time = legs['duration']['text']
-        retS += "<tr><td><p><b>" + i['name'] + "</b><br>" + i['formatted_address'] + "<br>" + \
-            "<a href=\"https://www.google.com/maps/place/" + \
-                i['formatted_address'] + "\">Google Maps</a>"
-        retS += '<br> <span class="extra">'
+        travel_time = legs['duration']['text']
+        name = i['name']
+        address = i['formatted_address']
+        maps_link = "https://www.google.com/maps/place/" + \
+                i['formatted_address']
+                
         steps = legs['steps']
-
+        directions = []
         for step in steps:
-            retS += step['html_instructions'].replace("</div>", "").replace(
-                "<div style=\"font-size:0.9em\">", "") + '<br>\n'
-
-        retS += '</span></p>'
-        retS += '<td> Travel Time: ' + time + '</td>'
+            directions += step['html_instructions'].replace("</div>", "").replace("<div style=\"font-size:0.9em\">", "")
 
         # tmp for waiting time
-        tmp = 0
+        wait_time = 0
         waitingTimeAvailable = False #var to determine if waiting time is in data
+        
         for a in hd:
             if a[:a.find('hospital') - 1] in i['name'].lower():
-                retS += "<td>Waiting Time: " + hd[a] + " min</td>"
-                tmp = int(hd[a])
-                waitingTimeAvailable = True
+                wait_time = int(hd[a])
                 break
 
-        if waitingTimeAvailable == False:
-            retS += "<td>Waiting Time: N/A</td>"
-
         # waiting time + travel time
-        totalTime =  int(time[:time.find(" ")]) + tmp 
+        total_time = int(travel_time[:travel_time.find(" ")]) + wait_time 
 
-        if totalTime < 10:
-            retS += '<td bgcolor="#00FF00"> Total Time: ' #make cell green
-        elif totalTime > 30:
-            retS += '<td bgcolor="#FF0000"> Total Time>' #make cell red
-        else:
-            retS += '<td> Total time: '
-        retS += str(totalTime) + " min </td>"
-        retS += "</td></tr>"  
-        x += 1
-        if x == 10:
-            break
-    return retS
+        hospital_data += (total_time, name, address, travel_time, wait_time, \
+                          directions, maps_link)
+    sorted_data = sorted(hospital_data, key=lambda x : x[0])
+    return render_template("current.html", hospital_data=hospital_data)
 
 
 @app.route("/signup", methods=["GET", "POST"])
