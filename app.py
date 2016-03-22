@@ -90,8 +90,8 @@ def hospitalsNearLocation(origin, url):
         # waiting time + travel time
         total_time = int(travel_time[:travel_time.find(" ")]) + wait_time 
 
-        hospital_data += (total_time, name, address, travel_time, wait_time, \
-                          directions, maps_link)
+        hospital_data.append((total_time, name, address, travel_time, \
+                              wait_time, directions, maps_link))
     sorted_data = sorted(hospital_data, key=lambda x : x[0])
     return render_template("current.html", hospital_data=hospital_data)
 
