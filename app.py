@@ -81,15 +81,28 @@ def hospitalsNearLocation(origin, url):
 
         # tmp for waiting time
         tmp = 0
+        waitingTimeAvailable = False #var to determine if waiting time is in data
         for a in hd:
             if a[:a.find('hospital') - 1] in i['name'].lower():
-                retS += "</td><td>Waiting Time: " + hd[a] + " min"
+                retS += "<td>Waiting Time: " + hd[a] + " min</td>"
                 tmp = int(hd[a])
+                waitingTimeAvailable = True
                 break
 
-        retS += '<td> Total time: ' + \
-            str(int(time[:time.find(" ")]) + tmp) + "</td>"
-        retS += "</td></tr>"  # , '<img src="', i['icon'], '>"<br><br><br>'
+        if waitingTimeAvailable == False:
+            retS += "<td>Waiting Time: N/A</td>"
+
+        # waiting time + travel time
+        totalTime =  int(time[:time.find(" ")]) + tmp 
+
+        if totalTime < 10:
+            retS += '<td bgcolor="#00FF00"> Total Time: ' #make cell green
+        elif totalTime > 30:
+            retS += '<td bgcolor="#FF0000"> Total Time>' #make cell red
+        else:
+            retS += '<td> Total time: '
+        retS += str(totalTime) + " min </td>"
+        retS += "</td></tr>"  
         x += 1
         if x == 10:
             break
@@ -114,7 +127,7 @@ def signup():
 def login():
     if request.method == "GET":
         if 'logged_in' in session and session['logged_in']:
-            return "Logged in!!"
+            return render_template("success.html")
         else:
             return render_template("login.html")
     else:
@@ -143,13 +156,14 @@ def success():
 
 
 @app.route("/update", methods=["GET", "POST"])
-def update():
+def update():                
     if request.method == "POST":
         fName = request.form["fName"]
         lName = request.form["lName"]
         dob = request.form["dob"]
         state = request.form["state"]
         loc = request.form["loc"]
+        userdb.update(session['username_hash'], session['password_hash'], fName, lName, dob, state, loc)
         return redirect("success")
     else:
         return render_template("update.html")
