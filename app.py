@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import urllib2
 import json
-import userdb
-from data import hd
+import userdb            # add / update user account methods
+from data import hd # hospital data gathered from some site
 
 app = Flask(__name__)
 key = "AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
