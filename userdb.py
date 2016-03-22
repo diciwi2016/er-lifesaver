@@ -1,16 +1,17 @@
 import hashlib
 
-def verify(u,p):
-    d={}
-    uname=str(u)
-    pwd=str(p)
-    f=open('database.txt','r').read().strip().split("\n")
+
+def verify(u, p):
+    d = {}
+    uname = str(u)
+    pwd = str(p)
+    f = open('database.txt', 'r').read().strip().split("\n")
     for i in range(len(f)):
         f[i] = f[i].split("|")
     for i in f:
-        d[i[0]]=i[1]
+        d[i[0]] = i[1]
     if uname in d:
-        if d[uname]==password_hash(pwd):
+        if d[uname] == password_hash(pwd):
             return True
         else:
             print 'wrong pass'
@@ -19,25 +20,26 @@ def verify(u,p):
         print 'cant find uname'
         return False
 
+
 def add(uname, pwd):
-    f=open('database.txt','a')
-    f.write(uname + "|" + password_hash(pwd) +  "\n")
+    f = open('database.txt', 'a')
+    f.write(uname + "|" + password_hash(pwd) + "\n")
     f.close()
     return True
 
+
 def update(uname, pwd, fname, lname, dob, loc, state):
 
-    DATA=open('database.txt','r')
-    File=DATA.read()
+    DATA = open('database.txt', 'r')
+    File = DATA.read()
     DATA.close()
-    
-    index=File.find(uname+"|")+len(user)+1
-    File=File[:index]+Npass+File[index+len(pwd):]
-    FileW=open('database.txt','w')
-    FileW.write(File)    
-    
-    
-           
+
+    index = File.find(uname + "|") + len(user) + 1
+    File = File[:index] + Npass + File[index + len(pwd):]
+    FileW = open('database.txt', 'w')
+    FileW.write(File)
+
+
 def password_hash(password):
     # Hash alg:
     m = hashlib.md5()
