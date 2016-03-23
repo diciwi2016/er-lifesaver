@@ -9,18 +9,25 @@
 {{s|safe}}
 <tr>
 
-<td>
+  <td>
+    <b>{{ item.1 }}</b> <br>
+    
   {{ item.2 }}
   <br>
+  <a href="{{ item.6 }}">Google Maps</a>
   {% for step in item.5 %}
-  <br> {{ step }}
+  <br> {{ step|safe}}
   {% endfor %}
   <br>
-  {{ item.6 }}
+  
 </td>
 
-<td> {{ item.3 }} </td>
-<td> {{ item.4 }} </td>
+<td>Travel time: {{ item.3 }} </td>
+<td>Wait time:
+  {% if item.4 == 0 %} N/A
+  {% else %} {{ item.4 }}
+  {% endif %}
+  mins</td>
 
 <td> Total Time: {{item.0}} mins </td>
 

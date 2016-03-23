@@ -34,8 +34,7 @@ def current():
 # returns the formatted thing the whole thing
 
 # hospital_dict:
-# key: total time
-# val: (name, address, travel time, wait time, directions, link)
+# (total time, name, address, travel time, wait time, directions, link)
 def hospitalsNearLocation(origin, url):
     hospital_data = []
     url = urllib2.urlopen(url)
@@ -76,7 +75,8 @@ def hospitalsNearLocation(origin, url):
         steps = legs['steps']
         directions = []
         for step in steps:
-            directions += step['html_instructions'].replace("</div>", "").replace("<div style=\"font-size:0.9em\">", "")
+            directions.append(step['html_instructions'].replace("</div>", "").replace("<div style=\"font-size:0.9em\">", "<br>"))
+            print step['html_instructions']
 
         # tmp for waiting time
         wait_time = 0
@@ -92,7 +92,8 @@ def hospitalsNearLocation(origin, url):
 
         hospital_data.append((total_time, name, address, travel_time, \
                               wait_time, directions, maps_link))
-    sorted_data = sorted(hospital_data, key=lambda x : x[0])
+        def sortBy(x): return x[0]
+    sorted_data = sorted(hospital_data, key=sortBy)
     return render_template("current.html", hospital_data=hospital_data)
 
 
