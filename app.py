@@ -76,7 +76,7 @@ def hospitalsNearLocation(origin, url):
         directions = []
         for step in steps:
             directions.append(step['html_instructions'].replace("</div>", "").replace("<div style=\"font-size:0.9em\">", "<br>"))
-            print step['html_instructions']
+            #print step['html_instructions']
 
         # tmp for waiting time
         wait_time = 0
@@ -94,7 +94,7 @@ def hospitalsNearLocation(origin, url):
                               wait_time, directions, maps_link))
         def sortBy(x): return x[0]
     sorted_data = sorted(hospital_data, key=sortBy)
-    return render_template("current.html", hospital_data=hospital_data)
+    return render_template("current.html", hospital_data=sorted_data)
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -151,8 +151,8 @@ def update():
         dob = request.form["dob"]
         state = request.form["state"]
         loc = request.form["loc"]
-        userdb.update(session['username_hash'], session['password_hash'], fName, lName, dob, state, loc)
-        return redirect("success")
+        newInfo = userdb.update(session['username_hash'], session['password_hash'], fName, lName, dob, state, loc)
+        return render_template("success.html", L=newInfo)
     else:
         return render_template("update.html")
 

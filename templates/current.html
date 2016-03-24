@@ -10,16 +10,20 @@
 <tr>
 
   <td>
+    <p>
     <b>{{ item.1 }}</b> <br>
-    
+
   {{ item.2 }}
   <br>
-  <a href="{{ item.6 }}">Google Maps</a>
-  {% for step in item.5 %}
-  <br> {{ step|safe}}
-  {% endfor %}
-  <br>
-  
+  <a href="{{ item.6 }}">Google Maps</a><br>
+    <span class="extra">
+      {% for step in item.5 %}
+      <br>
+      {{ step|safe}}
+      {% endfor %}
+    </span>
+  </p>
+
 </td>
 
 <td>Travel time: {{ item.3 }} </td>
@@ -29,7 +33,11 @@
   {% endif %}
   mins</td>
 
-<td> Total Time: {{item.0}} mins </td>
+{% if item.4 <= 10 %} <td bgcolor="#00FF00">
+{% elif item.4 >= 50 %} <td bgcolor="#FF0000">
+{% else %} <td bgcolor ="	#FF8C00">
+{% endif %}
+Total Time: {{item.0}} mins </td>
 
 </tr>
 {% endfor %}

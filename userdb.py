@@ -53,6 +53,35 @@ def update(uname, pwd, fname, lname, dob, loc, state):
         File+="\n"
     FileW = open('database.txt', 'w')
     FileW.write(File)
+    FileW.close()
+
+    DATA = open('database.txt', 'r')
+    lines=DATA.readlines()
+    DATA.close()
+    L = [ ]
+    a = " "
+    b = " "
+    c= " "
+    d = " "
+    e = " "
+    
+    for row in lines:
+        row = row.split("|")
+        print row
+        if row[0] == uname:
+            if len(row) > 2:
+                a = row[2]
+                if len(row) > 3:
+                    b = row[3]
+                    if len(row) > 4:
+                        c = row[4]
+                        if len(row) > 5:
+                            d = row[5]
+                            if len(row) >=6:
+                                e = row[6]
+    L.append((a, b, c, d, e))
+    return L
+        
 
 
 #####################
@@ -75,5 +104,6 @@ if __name__ == "__main__":
         username = str(raw_input("New username: "))
         password = str(raw_input("New password: "))
         f = open("database.txt", 'a')
-        update(username, password, "KKK", "YYY", "03/14/16", "345 Chambers", "NY")
+        L =update(username, password, "KKK", "YYY", "03/14/16", "345 Chambers", "NY")
         f.close()
+        print L

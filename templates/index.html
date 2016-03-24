@@ -28,6 +28,7 @@ window.onload = function getLocation()
     navigator.geolocation.watchPosition(showPosition);
     navigator.geolocation.watchPosition(showPosition2);
     }
+
   else{x.innerHTML="Geolocation is not supported by this browser.";}
   }
 function showPosition(position)
@@ -36,10 +37,12 @@ function showPosition(position)
   }
   function showPosition2(position)
   {
-  document.getElementById("lon").value=position.coords.longitude
+  document.getElementById("lon").value=position.coords.longitude;
+  document.getElementById("loc_form").submit();
   }
+
 </script>
-<form action="/current" method="POST">
+<form id = "loc_form" action="/current" method="POST">
 <input class = "form-control" id="lat" type="text" name="lat" value="" readonly>
 <input class = "form-control" id="lon" type="text" name = "lon" value="" readonly>
 <input type="submit" value = "Current Location">
