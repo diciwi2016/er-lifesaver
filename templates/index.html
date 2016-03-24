@@ -1,10 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
   <head>
     <title> {{title}} </title>
     <link rel="stylesheet" type="text/css" href="/static/style.css">
+	
+	<style type = "text/css">
+a:link { text-decoration: none}
+a:hover {text-decoration: underline}
+</style>
   </head>
-
 
   <body>
     <div id="banner">
@@ -38,7 +42,7 @@ function showPosition(position)
   function showPosition2(position)
   {
   document.getElementById("lon").value=position.coords.longitude;
-  document.getElementById("loc_form").submit();
+ // document.getElementById("loc_form").submit();
   }
 
 </script>
@@ -51,5 +55,8 @@ function showPosition(position)
 
     {% endblock %}
 
+    <div id="footer">
+       ©  Kathy Lau, Gabriel Marks, Sachal Malick
+    </div>
   </body>
 </html>

@@ -158,7 +158,8 @@ def update():
         state = request.form["state"]
         loc = request.form["loc"]
         userdb.update(session['username_hash'], session['password_hash'], fName, lName, dob, state, loc)
-
+        return redirect("success")
+    else:
         ## reopen database to retreive submitted info
         DATA = open('database.txt', 'r')
         lines=DATA.readlines()
@@ -174,7 +175,7 @@ def update():
         for row in lines:
             row = row.split("|")
             print row
-            if row[0] == uname:
+            if row[0] == session['username_hash']:
                 if len(row) > 2:
                     a = row[2]
                     if len(row) > 3:
@@ -188,10 +189,7 @@ def update():
                                     
         ## add tuple of info to the list
         newInfo.append((a, b, c, d, e))
-        
         return render_template("update.html", entered_text=newInfo)
-    else:
-        return render_template("update.html")
 
 
 @app.route("/send")

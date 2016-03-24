@@ -55,35 +55,6 @@ def update(uname, pwd, fname, lname, dob, loc, state):
     FileW.write(File)
     FileW.close()
 
-##    DATA = open('database.txt', 'r')
-##    lines=DATA.readlines()
-##    DATA.close()
-##    L = [ ]
-##    a = " "
-##    b = " "
-##    c= " "
-##    d = " "
-##    e = " "
-##    
-##    for row in lines:
-##        row = row.split("|")
-##        print row
-##        if row[0] == uname:
-##            if len(row) > 2:
-##                a = row[2]
-##                if len(row) > 3:
-##                    b = row[3]
-##                    if len(row) > 4:
-##                        c = row[4]
-##                        if len(row) > 5:
-##                            d = row[5]
-##                            if len(row) >=6:
-##                                e = row[6]
-##    L.append((a, b, c, d, e))
-##    return L
-        
-
-
 #####################
 # takes param (password)           #
 # hashes password using md5    #
