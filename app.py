@@ -143,16 +143,53 @@ def success():
     return render_template("success.html", title="LoggedIn")
 
 
+###################################
+## update user form and show entered info on form ##
+###################################
+
 @app.route("/update", methods=["GET", "POST"])
 def update():                
     if request.method == "POST":
+
+        ## update database to have user submitted info
         fName = request.form["fName"]
         lName = request.form["lName"]
         dob = request.form["dob"]
         state = request.form["state"]
         loc = request.form["loc"]
-        newInfo = userdb.update(session['username_hash'], session['password_hash'], fName, lName, dob, state, loc)
-        return render_template("success.html", L=newInfo)
+        userdb.update(session['username_hash'], session['password_hash'], fName, lName, dob, state, loc)
+
+        ## reopen database to retreive submitted info
+        DATA = open('database.txt', 'r')
+        lines=DATA.readlines()
+        DATA.close()
+        newInfo=[]
+        a = " "
+        b = " "
+        c= " "
+        d = " "
+        e = " "
+
+        ## find the row of the info of the user and assign value accordingly
+        for row in lines:
+            row = row.split("|")
+            print row
+            if row[0] == uname:
+                if len(row) > 2:
+                    a = row[2]
+                    if len(row) > 3:
+                        b = row[3]
+                        if len(row) > 4:
+                            c = row[4]
+                            if len(row) > 5:
+                                d = row[5]
+                                if len(row) >=6:
+                                    e = row[6]
+                                    
+        ## add tuple of info to the list
+        newInfo.append((a, b, c, d, e))
+        
+        return render_template("update.html", entered_text=newInfo)
     else:
         return render_template("update.html")
 
