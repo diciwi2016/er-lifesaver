@@ -3,6 +3,9 @@ import urllib2
 import json
 import userdb            # add / update user account methods
 from data import hd # hospital data gathered from some site
+#from data importsql
+import data
+import random
 
 app = Flask(__name__)
 key = "AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
@@ -27,7 +30,7 @@ def current():
             str(lat) + "," + str(lon) + "&sensor=true"  # + "&key=" + key
         retS = hospitalsNearLocation(lat + "," + lon, url)
 
-    return retS
+        return retS
 
 # origin is the formatted POST for the origin in directions api
 # url is the url for the gmaps api
@@ -47,7 +50,7 @@ def hospitalsNearLocation(origin, url):
     loc = loc.replace(" ", '+')
 
     # find nearest hospitals
-    url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=emergency+room+hospital" + \
+    url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=emergency+rooms+hospital" + \
         "+near+" + loc + "&key=AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
 
     url = urllib2.urlopen(url)
@@ -60,14 +63,22 @@ def hospitalsNearLocation(origin, url):
     retS = "<table border = '1'>"
     # url for directions api
     direction_api = "https://maps.googleapis.com/maps/api/directions/json?mode=driving&key=" + key
+    
+    process = True
+
     for i in res:
+
+        name = i['name']
+        if "Coney Island Hospital" in name and len(name) > 22:
+            continue
+        
         dirURL = direction_api + "&origin=" + origin + \
             "&destination=" + i['formatted_address']
         dirURL = dirURL.replace(" ", "%20")
         dirJson = json.loads(urllib2.urlopen(dirURL).read())
         legs = dirJson['routes'][0]['legs'][0]
         travel_time = legs['duration']['text']
-        name = i['name']
+       
         address = i['formatted_address']
         maps_link = "https://www.google.com/maps/place/" + \
                 i['formatted_address']
@@ -79,7 +90,7 @@ def hospitalsNearLocation(origin, url):
             #print step['html_instructions']
 
         # tmp for waiting time
-        wait_time = 0
+        wait_time = random.randint(70, 150)
         waitingTimeAvailable = False #var to determine if waiting time is in data
         
         for a in hd:
@@ -109,6 +120,27 @@ def signup():
             return "Passwords don't match"
     return render_template("signup.html")
 
+@app.route("/hospitalsignup", methods=["GET", "POST"])
+def hospitalsignup():
+    if request.method == "POST":
+        user = request.form["mail"]
+        pas = request.form["pass"]
+        pas2 = request.form["pass2"]
+        if pas == pas2:
+            data.addHospital(user, pas)
+            userdb.add(user, pas)
+            return render_template("hospitallogin.html")
+        else:
+            return "Passwords don't match"
+    return render_template("hospitalsignup.html")
+
+@app.route("/hospitalview", methods=["GET", "POST"])
+def hospitalview():
+    if request.method == "POST":
+        return render_template("success.html")
+    else:
+        return render_template("hospitalview.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/login/", methods=["GET", "POST"])
@@ -130,6 +162,59 @@ def login():
             session['logged_in'] = False
             return render_template("login.html")
 
+@app.route("/hospitallogin", methods=["GET", "POST"])
+@app.route("/hospitallogin/", methods=["GET", "POST"])
+def hospitallogin():
+    if request.method == "GET":
+        if 'logged_in' in session and session['logged_in']:
+            return render_template("hospitalz.html")
+        else:
+            return render_template("hospitallogin.html")
+    else:
+        assert(request.method == "POST")
+        if userdb.verify(request.form['username_in'],
+                         request.form['password_in']):
+            session['logged_in'] = True
+            session['username_hash'] = request.form['username_in']
+            session['password_hash'] = request.form['password_in']
+            return redirect("hospitalz")
+        else:
+            session['logged_in'] = False
+            return render_template("hospitallogin.html")
+
+@app.route("/hospitalz")
+def hospitalz():
+    return render_template("hospitalz.html")
+
+@app.route("/currentTime", methods=["GET", "POST"])
+@app.route("/currentTime/", methods=["GET", "POST"])
+def currentTime():
+    if request.method == "GET":
+        return render_template("currentTime.html")
+    else:
+        time = request.form.get("time1")
+        data.updateHospital( session['username_hash'] , time)
+        return render_template("hospitalz.html")
+
+@app.route("/hospitalschedule", methods=["GET", "POST"])
+@app.route("/hospitalschedule/", methods=["GET", "POST"])
+def hospitalschedule():
+    if request.method == "GET":
+        return render_template("hospitalschedule.html")
+    else:
+        a = request.form.get("time1")
+        b = request.form.get("time2")
+        c = request.form.get("time3")
+        d = request.form.get("time4")
+        e = request.form.get("time5")
+        f = request.form.get("time6")
+        g = request.form.get("time7")
+        h = request.form.get("time8")
+        var = [a,b,c,d,e,f,g,h]
+        L = []
+        for i in range(len(var)):
+            L.append((var[i], i))
+        return render_template("hospitalshow.html", times=L)
 
 @app.route("/logout")
 @app.route("/logout/")
@@ -192,13 +277,15 @@ def update():
         return render_template("update.html", entered_text=newInfo)
 
 
-@app.route("/send")
+@app.route("/send", methods=["GET", "POST"])
 def send():
-    return render_template("send.html")
+    if request.method == "POST":
+        return render_template("success.html")
+    else:
+        return render_template("send.html")
 
 
 if __name__ == '__main__':
     app.secret_key = 'dcb61f28eafb8771213f3e0612422b8d'
     app.run(debug=True)
-
-app.run('0.0.0.0', port=8000)
+    app.run('0.0.0.0', port=8000)

@@ -46,4 +46,14 @@ for i in info[:]:
         if info.index(i) > len(info):
             break
 
+sql={}
+
+def addHospital(hName, pwd):
+    if hName not in sql:
+        sql[hName] = pwd
+        hd[hName] = 0
+
+def updateHospital(hName, currentTime):
+    hd[hName] = currentTime 
+
 # print hd

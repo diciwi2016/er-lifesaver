@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<BR>
+<center>
+  WAITING TIME NOW:
+<BR><BR>
+{{s|safe}}
+<form method = "POST">
+
+      <select name = "time1">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+      <br>
+
+      <input type="submit" name="button" value="update"><br>
+
+</form>
+<BR><BR><BR>
+
+
+<BR><BR><BR>
+<a href = "/logout"> Logout </a>
+{% endblock %}

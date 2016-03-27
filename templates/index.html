@@ -3,7 +3,7 @@
   <head>
     <title> {{title}} </title>
     <link rel="stylesheet" type="text/css" href="/static/style.css">
-	
+
 	<style type = "text/css">
 a:link { text-decoration: none}
 a:hover {text-decoration: underline}
@@ -12,8 +12,15 @@ a:hover {text-decoration: underline}
 
   <body>
     <div id="banner">
-      <div id="l"><a href="/login"> Login </a></div>
-      <div id = "r"> <a href="/signup"> Signup </a></div>
+      <div id="l">
+        <a href="/login"> User Login </a> <br>
+        <a href="/hospitallogin"> Hospital Login</a>
+      </div>
+
+      <div id = "r">
+        <a href="/signup"> User Signup </a> <br>
+        <a href = "/hospitalsignup"> Hospital Sign Up </a>
+      </div>
     <BR>  <center><b><a href = "/">ER_SEARCH</a></b></center>
     </div>
 
@@ -42,7 +49,7 @@ function showPosition(position)
   function showPosition2(position)
   {
   document.getElementById("lon").value=position.coords.longitude;
-  document.getElementById("loc_form").submit();
+//  document.getElementById("loc_form").submit();
   }
 
 </script>

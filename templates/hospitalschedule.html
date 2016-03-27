@@ -1,0 +1,107 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<BR>
+<center>
+Update your wait times!
+<BR><BR>
+{{s|safe}}
+<form method = "POST">
+
+      7 A.M. - 10 A.M.
+      <select name = "time1">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+      <br>
+      10 A.M. - 1 P.M.
+      <select name = "time2">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+      <br>
+      1 P.M. - 4 P.M.
+      <select name = "time3">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+      <br>
+      4 P.M. - 7 P.M.
+      <select name = "time4">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+      <br>
+      7 P.M. - 10 P.M.
+      <select name = "time5">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+      <br>
+      10 P.M. - 1 A.M.
+      <select name = "time6">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+      <br>
+      1 A.M. - 4 A.M.
+      <select name = "time7">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+      <br>
+      4 A.M. - 7 A.M.
+      <select name = "time8">
+      <option value = "10min"> 10 min </option>
+      <option value = "30min"> 30 min </option>
+      <option value = "60min"> 60 min </option>
+      <option value = "90min"> 90 min </option>
+      <option value = "120min"> 120 min </option>
+      <option value = "180min"> 180 min </option>
+      <option value = "Xmin"> Over 180 min </option>
+      </select>
+
+      <input type="submit" name="button" value="update"><br>
+</form>
+<BR><BR><BR>
+
+
+<BR><BR><BR>
+<a href = "/logout"> Logout </a>
+{% endblock %}
