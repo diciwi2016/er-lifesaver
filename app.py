@@ -13,7 +13,7 @@ key = "AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
 
 @app.route('/')
 def root():
-    return render_template("index.html", title='Main')
+    return render_template("index2.html", title='Main')
 
 # V link to show nearby hospitals + waiting time if available
 
