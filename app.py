@@ -144,8 +144,22 @@ def hospitalview():
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/login/", methods=["GET", "POST"])
 def login():
-    return render_template("success.html")
-
+    if request.method == "GET":
+        if 'logged_in' in session and session['logged_in']:
+            return render_template("success.html")
+        else:
+            return render_template("login2.html")
+    else:
+        assert(request.method == "POST")
+        if userdb.verify(request.form['username_in'],
+                         request.form['password_in']):
+            session['logged_in'] = True
+            session['username_hash'] = request.form['username_in']
+            session['password_hash'] = request.form['password_in']
+            return redirect("success")
+        else:
+            session['logged_in'] = False
+            return render_template("login2.html")
 @app.route("/hospitallogin", methods=["GET", "POST"])
 @app.route("/hospitallogin/", methods=["GET", "POST"])
 def hospitallogin():
