@@ -148,7 +148,7 @@ def login():
         if 'logged_in' in session and session['logged_in']:
             return render_template("success.html")
         else:
-            return render_template("login.html")
+            return render_template("login2.html")
     else:
         assert(request.method == "POST")
         if userdb.verify(request.form['username_in'],
