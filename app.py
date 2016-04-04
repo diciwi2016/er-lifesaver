@@ -6,7 +6,6 @@ from data import hd # hospital data gathered from some site
 #from data importsql
 import data
 import random
-
 app = Flask(__name__)
 key = "AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
 
@@ -160,7 +159,7 @@ def login():
             return redirect("success")
         else:
             session['logged_in'] = False
-            return render_template("login.html")
+            return render_template("login2.html")
 
 @app.route("/hospitallogin", methods=["GET", "POST"])
 @app.route("/hospitallogin/", methods=["GET", "POST"])
