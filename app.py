@@ -13,7 +13,7 @@ key = "AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
 
 @app.route('/')
 def root():
-    return render_template("index.html", title='Main')
+    return render_template("index2.html", title='Main')
 
 # V link to show nearby hospitals + waiting time if available
 
@@ -149,7 +149,7 @@ def login():
         if 'logged_in' in session and session['logged_in']:
             return render_template("success.html")
         else:
-            return render_template("login.html")
+            return render_template("login2.html")
     else:
         assert(request.method == "POST")
         if userdb.verify(request.form['username_in'],
