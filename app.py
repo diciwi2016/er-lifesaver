@@ -10,7 +10,7 @@ app = Flask(__name__)
 key = "AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
 
 
-@app.route('/')
+ @app.route('/')
 def root():
     return render_template("index2.html", title='Main')
 
