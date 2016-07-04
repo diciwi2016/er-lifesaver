@@ -3,6 +3,8 @@ import urllib2
 import json
 import userdb            # add / update user account methods
 import random
+from hospitalnow import printPage
+
 app = Flask(__name__)
 key = "AIzaSyDm8rcyz9i4d8p2QvmCAumvNTM1V9CfmDA"
 
@@ -193,7 +195,15 @@ def currentTime():
 @app.route("/hospitalschedule/", methods=["GET", "POST"])
 def hospitalschedule():
     if request.method == "GET":
-        return render_template("hospitalschedule.html")
+
+        File = open("hospitaldb.txt", "r")
+        File = File.readlines()
+        for lines in File:
+            line = lines.split("|")
+            if line[0] == session["username_hash"]:
+                table = line[2:]
+                break
+        return render_template("hospitalschedule.html", table = table)
     else:
         a = request.form.get("time1")
         b = request.form.get("time2")
@@ -204,10 +214,12 @@ def hospitalschedule():
         g = request.form.get("time7")
         h = request.form.get("time8")
         var = [a,b,c,d,e,f,g,h]
-        L = []
-        for i in range(len(var)):
-            L.append((var[i], i))
-        return render_template("hospitalshow.html", times=L)
+        userdb.hSchedUpdate(session['username_hash'], session['password_hash'], var)
+        return render_template("hospitalz.html")
+        #L = []
+        #for i in range(len(var)):
+         #   L.append((var[i], i))
+        #return render_template("hospitalshow.html", times=L)
 
 @app.route("/logout")
 @app.route("/logout/")

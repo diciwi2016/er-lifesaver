@@ -1,5 +1,4 @@
-
-
+beg = """
 <!DOCTYPE html>
 <html lang="en">
 
@@ -133,29 +132,33 @@
 <BR><BR>
 <BR><BR>
 
-
-<table border = "1" style="width:40%">
-
-  <tr><td><center>
-
-      <a href = "/hospitalschedule"> Update your schedule </a>
-
-  </center></td></tr>
-  <tr><td><center>
-
-      <a href = "/currentTime"> Update current waiting time </a>
-
-  </center></td></tr>
-
-  <tr><td><center>
-
-      <a href = "/hospitalview"> See current patients </a>
-
-  </center></td></tr>
-
+"""
+mid  = """
+{{s|safe}}
+<form method="POST">
+  <BR>
+  <CENTER>
+    SCHEDULE<BR><BR>
+    <table border = '1'>
+    """
+File = open("hospitaldb.txt", "r")
+File = File.readlines()
+i = 0
+for lines in File:
+    line = lines.split("|")
+    mid += "<TR>"
+    mid+="<TD>" + str(i) + "</TD>"
+    mid+="<TD>" + str(line[i]) + "</TD>"
+    mid += "</TR>"
+    
+mid +="""
+{% endfor %}
 </table>
-
-
+<BR><BR>
+</CENTER>
+</form>
+"""
+end = """
 
 <BR><BR><BR>
 
@@ -207,4 +210,8 @@
 
 </html>
 
+"""
 
+def printPage():
+    page = beg + mid + end
+    return page

@@ -62,6 +62,19 @@ def update(uname, pwd, fname, lname, dob, loc, state):
     FileW.write(File)
     FileW.close()
 
+def hSchedUpdate(uname, pwd, listt):
+    DATA = open('hospitaldb.txt', 'r')
+    File = DATA.read()
+    DATA.close()
+
+    index = File.find(uname + "|") + len(uname) + 1
+    File = File[:index] + password_hash(pwd) + "|" + listt[0]+ "|" + listt[1] + "|" + listt[2] + "|" + listt[3]+ "|" +listt[4]+ "|" +listt[5]+ "|" +listt[6]+ "|" +listt[7] + File[File[index:-2].find("\n"):]
+    #if File[:-2]!="\n":
+     #   File+="\n"
+    FileW = open('hospitaldb.txt', 'w')
+    FileW.write(File)
+    FileW.close()
+ 
 #####################
 # takes param (password)           #
 # hashes password using md5    #
