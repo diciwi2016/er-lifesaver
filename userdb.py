@@ -5,15 +5,16 @@ import hashlib
 # to verify if username & password matches    #
 ##############################
 
-def verify(u, p):
+def verify(u, p, fname):
     d = {} #dictionary for each user account
     uname = str(u)
     pwd = str(p)
-    f = open('database.txt', 'r').read().strip().split("\n")
+    f = open(fname, 'r').read().strip().split("\n")
     for i in range(len(f)):
         f[i] = f[i].split("|")
     for i in f:
-        d[i[0]] = i[1] # key: username, value: password
+        if len(i) > 1:
+            d[i[0]] = i[1] # key: username, value: password
     if uname in d: # match input with dictionary
         if d[uname] == password_hash(pwd):
             return True
@@ -30,9 +31,15 @@ def verify(u, p):
 # add user account to database             #
 #########################
 
-def add(uname, pwd):
-    f = open('database.txt', 'a')
+def add(uname, pwd, fname):
+    f = open(fname, 'a')
     f.write(uname + "|" + password_hash(pwd) + "\n")
+    f.close()
+    return True
+
+def addHospital(uname, pwd, hname, fname):
+    f = open(fname, 'a')
+    f.write(uname + "|" + password_hash(pwd) + "|" + hname +"\n")
     f.close()
     return True
 
@@ -48,9 +55,9 @@ def update(uname, pwd, fname, lname, dob, loc, state):
     DATA.close()
 
     index = File.find(uname + "|") + len(uname) + 1
-    File = File[:index] + password_hash(pwd) + "|" + fname + "|" + lname + "|" + dob + "|" + loc + "|" + state + File[File[index:].find("\n"):]
-    if File[:-2]!="\n":
-        File+="\n"
+    File = File[:index] + password_hash(pwd) + "|" + fname + "|" + lname + "|" + dob + "|" + loc + "|" + state + File[File[index:-2].find("\n"):]
+    #if File[:-2]!="\n":
+     #   File+="\n"
     FileW = open('database.txt', 'w')
     FileW.write(File)
     FileW.close()

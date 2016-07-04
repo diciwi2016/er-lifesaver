@@ -89,10 +89,7 @@ def hospitalsNearLocation(origin, url):
         wait_time = random.randint(70, 150)
         waitingTimeAvailable = False #var to determine if waiting time is in data
         
-        for a in hd:
-            if a[:a.find('hospital') - 1] in i['name'].lower():
-                wait_time = int(hd[a])
-                break
+       
 
         # waiting time + travel time
         total_time = int(travel_time[:travel_time.find(" ")]) + wait_time 
@@ -111,7 +108,7 @@ def signup():
         pas = request.form["password"]
         pas2 = request.form["password2"]
         if pas == pas2:
-            userdb.add(user, pas)
+            userdb.add(user, pas, "database.txt")
         else:
             return "Passwords don't match"
     return render_template("signup.html")
@@ -122,9 +119,9 @@ def hospitalsignup():
         user = request.form["mail"]
         pas = request.form["pass"]
         pas2 = request.form["pass2"]
+        hname = request.form["username"]
         if pas == pas2:
-            data.addHospital(user, pas)
-            userdb.add(user, pas)
+            userdb.addHospital(user, pas, hname, "hospitaldb.txt")
             return render_template("hospitallogin.html")
         else:
             return "Passwords don't match"
@@ -149,7 +146,7 @@ def login():
     else:
         assert(request.method == "POST")
         if userdb.verify(request.form['username_in'],
-                         request.form['password_in']):
+                         request.form['password_in'], "database.txt"):
             session['logged_in'] = True
             session['username_hash'] = request.form['username_in']
             session['password_hash'] = request.form['password_in']
@@ -157,6 +154,7 @@ def login():
         else:
             session['logged_in'] = False
             return render_template("login2.html")
+        
 @app.route("/hospitallogin", methods=["GET", "POST"])
 @app.route("/hospitallogin/", methods=["GET", "POST"])
 def hospitallogin():
@@ -168,7 +166,7 @@ def hospitallogin():
     else:
         assert(request.method == "POST")
         if userdb.verify(request.form['username_in'],
-                         request.form['password_in']):
+                         request.form['password_in'], "hospitaldb.txt"):
             session['logged_in'] = True
             session['username_hash'] = request.form['username_in']
             session['password_hash'] = request.form['password_in']
@@ -237,7 +235,7 @@ def update():
         dob = request.form["dob"]
         state = request.form["state"]
         loc = request.form["loc"]
-        userdb.update(session['username_hash'], session['password_hash'], fName, lName, dob, state, loc)
+        userdb.update(session['username_hash'], session['password_hash'], fName, lName, dob, loc, state)
         return redirect("success")
     else:
         ## reopen database to retreive submitted info
